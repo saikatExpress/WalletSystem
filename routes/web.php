@@ -33,7 +33,7 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('/store', 'store')->name('store');
 });
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth', 'user.status'])->group(function(){
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
 
