@@ -56,6 +56,23 @@ class AuthController extends Controller
         }
     }
 
+    public function passwordCreate()
+    {
+        return view('auth.password');
+    }
+
+    public function passwordReset(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            return 1;
+        } catch (\Exception $e) {
+            DB::rollback();
+            info($e);
+        }
+    }
+
+
     public function logout(Request $request)
     {
         Auth::logout();

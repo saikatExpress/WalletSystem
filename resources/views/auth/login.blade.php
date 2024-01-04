@@ -2,11 +2,10 @@
 <html lang="en">
 
 
-<!-- auth-login.html  21 Nov 2019 03:49:32 GMT -->
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Otika - Admin Dashboard Template</title>
+    <title>Login | Admin Panel</title>
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/css/app.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/bundles/bootstrap-social/bootstrap-social.css') }}">
@@ -31,6 +30,13 @@
                                 {{ $errors->first('email') }}
                             </div>
                         @endif
+
+                        @if(Session::has('error'))
+                            <div class="alert alert-danger">
+                                {{ Session::get('error') }}
+                            </div>
+                        @endif
+
 
                         <div class="card card-primary">
                             <div class="card-header">
@@ -65,7 +71,7 @@
                                         <div class="d-block">
                                             <label for="password" class="control-label">Password</label>
                                             <div class="float-right">
-                                                <a href="auth-forgot-password.html" class="text-small">
+                                                <a href="{{ route('forgot.password') }}" class="text-small">
                                                 Forgot Password?
                                                 </a>
                                             </div>
