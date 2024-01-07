@@ -194,12 +194,14 @@
 
                         <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown">
-                                <i data-feather="briefcase"></i><span>Widgets</span>
+                                <i data-feather="briefcase"></i><span>User</span>
                             </a>
 
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="widget-chart.html">Chart Widgets</a></li>
-                                <li><a class="nav-link" href="widget-data.html">Data Widgets</a></li>
+                                <li><a class="nav-link" href="{{ route('user.create') }}">Create User</a></li>
+                                <li><a class="nav-link" href="widget-data.html">User List</a></li>
+                                <li><a class="nav-link" href="widget-data.html">Role</a></li>
+                                <li><a class="nav-link" href="widget-data.html">Permission</a></li>
                             </ul>
                         </li>
 

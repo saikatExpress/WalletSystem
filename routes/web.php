@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TestEmail;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 
 /*
@@ -16,15 +18,37 @@ use App\Http\Controllers\AdminController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// Auth::routes([
-//     'login' => true,
-//     'logout' => true,
-//     'register' => true,
-//     'reset' => true, // for resetting passwords
-//     'confirm' => false, // for additional password confirmations
-//     'verify' => false, // for email verification
-// ]);
 
+// Test Route
+Route::get('/test', function(){
+    function generateRandomCode() {
+        $validDigits = [7, 6, 5, 3]; // Define valid digits
+        $code = '';
+    
+        for ($i = 0; $i < 4; $i++) {
+            $code .= $validDigits[array_rand($validDigits)]; // Append a random valid digit
+        }
+    
+        return $code;
+    }
+    
+    $randomCode = generateRandomCode();
+    return $randomCode; // Output the generated random 4-digit code containing only 7, 6, 5, and 3
+    
+});
+
+Route::get('/link', function () {
+    Artisan::call('storage:link');
+});
+
+Route::get('/clear-cache', function() {
+    Artisan::call('config:cache');
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    return "Cache is cleared";
+})->name('clear.cache');
 
 Route::get('/', function () {
     return view('auth.login');
@@ -51,6 +75,9 @@ Route::get('/send-email', function () {
 Route::middleware(['auth', 'user.status'])->group(function(){
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
+    Route::controller(UserController::class)->group(function(){
+        Route::get('/user/create', 'create')->name('user.create');
+    });
 
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
