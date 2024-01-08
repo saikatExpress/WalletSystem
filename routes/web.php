@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 
@@ -32,6 +33,11 @@ Route::get('/clear-cache', function() {
 Route::get('/', function () {
     return view('auth.login');
 })->name('login');
+
+Route::controller(TestController::class)->group(function() {
+    Route::post('/language', 'languageUpdate')->name('language');
+});
+
 
 Route::controller(AuthController::class)->group(function(){
     Route::get('/register', 'register')->name('register');

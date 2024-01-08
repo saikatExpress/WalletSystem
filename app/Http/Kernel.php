@@ -36,6 +36,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\SetLocale::class
         ],
 
         'api' => [
@@ -69,5 +70,6 @@ class Kernel extends HttpKernel
 
     protected $routeMiddleware = [
         'user.status' => \App\Http\Middleware\UserStatus::class,
+        'setLocale' => \App\Http\Middleware\SetLocale::class
     ];
 }
