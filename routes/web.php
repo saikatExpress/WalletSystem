@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Mail;
-use App\Mail\TestEmail;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
@@ -18,24 +15,6 @@ use App\Http\Controllers\AdminController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-// Test Route
-Route::get('/test', function(){
-    function generateRandomCode() {
-        $validDigits = [7, 6, 5, 3]; // Define valid digits
-        $code = '';
-    
-        for ($i = 0; $i < 4; $i++) {
-            $code .= $validDigits[array_rand($validDigits)]; // Append a random valid digit
-        }
-    
-        return $code;
-    }
-    
-    $randomCode = generateRandomCode();
-    return $randomCode; // Output the generated random 4-digit code containing only 7, 6, 5, and 3
-    
-});
 
 Route::get('/link', function () {
     Artisan::call('storage:link');
@@ -58,18 +37,12 @@ Route::controller(AuthController::class)->group(function(){
     Route::get('/register', 'register')->name('register');
     Route::post('/store', 'store')->name('store');
     Route::get('/password', 'passwordCreate')->name('forgot.password');
+    Route::get('/send/mail', 'sendOtpMail')->name('send.mail');
+    Route::get('/otp/{email}/{code}', 'otpForm')->name('otp');
+    Route::post('/otp/store', 'otpStore')->name('otp.store');
+    Route::get('/update/password', 'editPassword')->name('update.password');
+    Route::post('edit/password', 'updatePassword')->name('password.edit');
     Route::post('/password/reset', 'passwordReset')->name('password.reset');
-});
-
-Route::get('/send-email', function () {
-    $details = [
-        'title' => 'Test Email',
-        'body' => 'This is a test email sent from Laravel using Gmail SMTP.'
-    ];
-
-    Mail::to('saikathosen444@gmail.com')->send(new TestEmail($details));
-
-    return 'Email sent successfully!';
 });
 
 Route::middleware(['auth', 'user.status'])->group(function(){

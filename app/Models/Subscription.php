@@ -18,11 +18,11 @@ class Subscription extends Model
     ];
 
     protected $casts = [
-        'id' => 'integer',
-        'user_id' => 'integer',
-        'status' => 'integer',
-        'flag' => 'integer',
-        'isActive' => 'integer',
+        'id'         => 'integer',
+        'user_id'    => 'integer',
+        'status'     => 'integer',
+        'flag'       => 'integer',
+        'isActive'   => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
