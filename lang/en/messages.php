@@ -5,4 +5,6 @@
         'userlist' => 'User List',
         'role' => 'Role',
         'rolelist' => 'Role List',
+        'permission' => 'Permission',
+        'setting' => 'Setting',
     ];

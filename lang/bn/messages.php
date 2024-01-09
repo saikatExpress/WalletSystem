@@ -5,4 +5,6 @@ return [
     'userlist' => 'ব্যাবহারকারী তালিকা',
     'role' => 'রোল',
     'rolelist' => 'রোল তালিকা',
+    'permission' => 'পারমিশন',
+    'setting' => 'সেটিংস',
 ];

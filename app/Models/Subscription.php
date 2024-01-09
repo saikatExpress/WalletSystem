@@ -12,17 +12,21 @@ class Subscription extends Model
 
     protected $fillable = [
         'user_id',
+        'otp',
         'status',
         'flag',
         'isActive',
+        'expire_at',
     ];
 
     protected $casts = [
         'id'         => 'integer',
         'user_id'    => 'integer',
+        'otp'        => 'integer',
         'status'     => 'integer',
         'flag'       => 'integer',
         'isActive'   => 'integer',
+        'expire_at'  => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',

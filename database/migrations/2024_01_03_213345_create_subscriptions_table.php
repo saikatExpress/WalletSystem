@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')
                 ->onUpdate('cascade')->onDelete('cascade')->nullable();
+            $table->integer('otp')->nullable();
             $table->integer('status')->nullable();
             $table->integer('flag')->nullable();
             $table->integer('isActive')->nullable();
+            $table->timestamp('expire_at');
             $table->softDeletes();
             $table->timestamps();
         });

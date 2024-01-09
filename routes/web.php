@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +21,13 @@ use App\Http\Controllers\AdminController;
 
 Route::get('/link', function () {
     Artisan::call('storage:link');
+    return 'Storage Link Successfully';
 });
+
+Route::get('/clear', function(){
+    Artisan::call('optimize:clear');
+    return 'Optimize Clear!.';
+})->name('clear');
 
 Route::get('/clear-cache', function() {
     Artisan::call('config:cache');
@@ -58,6 +66,21 @@ Route::middleware(['auth', 'user.status'])->group(function(){
         Route::get('/user/create', 'create')->name('user.create');
         Route::post('/user/store', 'store')->name('user.store');
         Route::get('/user/detail/{id}', 'userDetails')->name('user.detail');
+    });
+
+    Route::controller(RoleController::class)->group(function(){
+        Route::get('/role/list', 'index')->name('role.list');
+        Route::get('/create/role', 'create')->name('role.create');
+        Route::post('/role/store', 'store')->name('role.store');
+        Route::get('/role/edit/{id}', 'edit')->name('role.edit');
+        Route::post('/role/update', 'update')->name('role.update');
+        Route::get('/get-permissions/{id}', 'getPermissions')->name('get.permissions');
+        Route::get('/role/delete/{id}', 'destroy');
+    });
+
+
+    Route::controller(SettingController::class)->group(function(){
+        Route::get('/setting', 'create')->name('setting.store');
     });
 
 

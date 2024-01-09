@@ -187,8 +187,8 @@
                                                 fa-user"></i> Profile
                         </a> <a href="timeline.html" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
                         Activities
-                        </a> <a href="#" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
-                        Settings
+                        </a> <a href="{{ route('setting.store') }}" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
+                        {{ __('messages.setting') }}
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
@@ -223,8 +223,8 @@
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="{{ route('user.create') }}">{{ __('messages.createuser') }}</a></li>
                                 <li><a class="nav-link" href="widget-data.html">{{ __('messages.userlist') }}</a></li>
-                                <li><a class="nav-link" href="widget-data.html">{{ __('messages.role') }}</a></li>
-                                <li><a class="nav-link" href="widget-data.html">Permission</a></li>
+                                <li><a class="nav-link" href="{{ route('role.create') }}">{{ __('messages.role') }}</a></li>
+                                <li><a class="nav-link" href="widget-data.html">{{ __('messages.permission') }}</a></li>
                             </ul>
                         </li>
 
