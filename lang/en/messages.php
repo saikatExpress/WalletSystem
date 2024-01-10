@@ -7,4 +7,5 @@
         'rolelist' => 'Role List',
         'permission' => 'Permission',
         'setting' => 'Setting',
+        'order' => 'Order',
     ];

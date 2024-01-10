@@ -35,6 +35,13 @@ class RoleController extends Controller
         return view('admin.role.list', compact('roles'));
     }
 
+    public function permissionIndex()
+    {
+        $permissions = Permission::all();
+
+        return view('admin.role.permission', compact('permissions'));
+    }
+
     public function create()
     {
         if(!Auth::check()){

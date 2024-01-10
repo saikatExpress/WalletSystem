@@ -70,6 +70,7 @@ Route::middleware(['auth', 'user.status'])->group(function(){
 
     Route::controller(RoleController::class)->group(function(){
         Route::get('/role/list', 'index')->name('role.list');
+        Route::get('/permission/list', 'permissionIndex')->name('permission.list');
         Route::get('/create/role', 'create')->name('role.create');
         Route::post('/role/store', 'store')->name('role.store');
         Route::get('/role/edit/{id}', 'edit')->name('role.edit');

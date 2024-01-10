@@ -7,4 +7,5 @@ return [
     'rolelist' => 'রোল তালিকা',
     'permission' => 'পারমিশন',
     'setting' => 'সেটিংস',
+    'order' => 'অর্ডার',
 ];
