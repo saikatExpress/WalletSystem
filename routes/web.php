@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SettingController;
 
 /*
@@ -67,6 +68,10 @@ Route::middleware(['auth', 'user.status'])->group(function(){
         Route::get('/user/create', 'create')->name('user.create');
         Route::post('/user/store', 'store')->name('user.store');
         Route::get('/user/detail/{id}', 'userDetails')->name('user.detail');
+    });
+
+    Route::controller(PackageController::class)->group(function(){
+        Route::get('/package/create', 'create')->name('package.create');
     });
 
     Route::controller(RoleController::class)->group(function(){
