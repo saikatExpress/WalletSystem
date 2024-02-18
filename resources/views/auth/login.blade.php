@@ -23,7 +23,8 @@
         <section class="section">
             <div class="container mt-5">
                 <div class="row">
-                    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+                    <div
+                        class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
 
                         @if ($errors->has('email'))
                             <div class="alert alert-danger">
@@ -31,13 +32,13 @@
                             </div>
                         @endif
 
-                        @if(Session::has('error'))
+                        @if (Session::has('error'))
                             <div class="alert alert-danger">
                                 {{ Session::get('error') }}
                             </div>
                         @endif
 
-                        @if(Session::has('success'))
+                        @if (Session::has('success'))
                             <div class="alert alert-success">
                                 {{ Session::get('success') }}
                             </div>
@@ -51,7 +52,8 @@
                             <div class="card-body">
 
                                 @if (session('message'))
-                                    <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <div id="success-alert" class="alert alert-success alert-dismissible fade show"
+                                        role="alert">
                                         {{ session('message') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -59,11 +61,13 @@
                                     </div>
                                 @endif
 
-                                <form method="POST" action="{{ route('store') }}" class="needs-validation" novalidate="">
+                                <form method="POST" action="{{ route('store') }}" class="needs-validation"
+                                    novalidate="">
                                     @csrf
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
+                                        <input id="email" type="email" class="form-control" name="email"
+                                            tabindex="1" required autofocus>
                                         <div class="invalid-feedback">
                                             Please fill in your email
                                         </div>
@@ -78,11 +82,12 @@
                                             <label for="password" class="control-label">Password</label>
                                             <div class="float-right">
                                                 <a href="{{ route('forgot.password') }}" class="text-small">
-                                                Forgot Password?
+                                                    Forgot Password?
                                                 </a>
                                             </div>
                                         </div>
-                                        <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
+                                        <input id="password" type="password" class="form-control" name="password"
+                                            tabindex="2" required>
                                         <div class="invalid-feedback">
                                             please fill in your password
                                         </div>
@@ -92,13 +97,15 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
+                                            <input type="checkbox" name="remember" class="custom-control-input"
+                                                tabindex="3" id="remember-me">
                                             <label class="custom-control-label" for="remember-me">Remember Me</label>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                                        Login
+                                        <button type="submit" id="login-button"
+                                            class="btn btn-primary btn-lg btn-block" tabindex="4">
+                                            Login
                                         </button>
                                     </div>
                                 </form>
@@ -109,19 +116,19 @@
                                 <div class="row sm-gutters">
                                     <div class="col-6">
                                         <a class="btn btn-block btn-social btn-facebook">
-                                        <span class="fab fa-facebook"></span> Facebook
+                                            <span class="fab fa-facebook"></span> Facebook
                                         </a>
                                     </div>
                                     <div class="col-6">
                                         <a class="btn btn-block btn-social btn-twitter">
-                                        <span class="fab fa-twitter"></span> Twitter
+                                            <span class="fab fa-twitter"></span> Twitter
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="mt-5 text-muted text-center">
-                        Don't have an account? <a href="{{ route('register') }}">Create One</a>
+                            Don't have an account? <a href="{{ route('register') }}">Create One</a>
                         </div>
                     </div>
                 </div>
@@ -148,15 +155,42 @@
                 setTimeout(function() {
                     $('#success-alert').fadeOut('slow', function() {
                         // Redirect to the dashboard route after hiding the alert
-                        window.location.href = '{{ route("dashboard") }}';
+                        window.location.href = '{{ route('dashboard') }}';
                     });
                 }, 1000); // Wait for 1 second before fading out after changing text
             }, 2000); // Wait for 2 seconds before changing the text
         });
     </script>
 
+    <!-- Include this in your Blade view -->
+    @if (session('remainingLockoutTime'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var remainingLockoutTime = {{ session('remainingLockoutTime') }};
+                var loginButton = document.getElementById(
+                    'login-button'); // Replace 'login-button' with your actual button ID
+
+                if (remainingLockoutTime > 0) {
+                    loginButton.disabled = true;
+
+
+                    // Disable the button for the remaining lockout time
+                    setTimeout(function() {
+                        loginButton.disabled = false;
+                    }, remainingLockoutTime * 1000);
+
+                    // Reload the page after 20 seconds
+                    setTimeout(function() {
+                        location.reload();
+                    }, 20000);
+                }
+            });
+        </script>
+    @endif
+
 </body>
 
 
 <!-- auth-login.html  21 Nov 2019 03:49:32 GMT -->
+
 </html>

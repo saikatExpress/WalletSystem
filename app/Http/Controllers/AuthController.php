@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Mail\TestEmail;
 use App\Models\Subscription;
-use Illuminate\Http\Request;
 use App\Services\OtpService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -50,8 +51,17 @@ class AuthController extends Controller
 
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
-
+                $this->clearLoginAttempts($request);
                 return redirect()->back()->with('message', 'Authentication Successfull');
+            }
+
+            $remainingLockoutTime = $this->incrementLoginAttempts($request);
+
+            if ($remainingLockoutTime > 0) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['email' => 'Too many login attempts. Please try again after ' . $remainingLockoutTime . ' seconds.'])
+                    ->with(['remainingLockoutTime' => $remainingLockoutTime]);
             }
 
             return back()->withErrors([
@@ -62,6 +72,40 @@ class AuthController extends Controller
             DB::rollback();
             info($e);
         }
+    }
+
+    protected function incrementLoginAttempts($request)
+    {
+        $key = $this->throttleKey($request);
+        $attempts = Cache::get($key, 0);
+
+        $attempts++;
+
+        Cache::put($key, $attempts, now()->addSeconds(20));
+
+        if ($attempts == 3) {
+            $remainingLockoutTime = Cache::get($key . ':timer');
+            if (!$remainingLockoutTime) {
+                Cache::put($key . ':timer', 20 * 60, now()->addSeconds(20));
+                $remainingLockoutTime = 20 * 60;
+            }
+
+            return $remainingLockoutTime;
+        }
+
+        return 0;
+    }
+
+    protected function throttleKey(Request $request)
+    {
+        return mb_strtolower($request->input('email')) . '|' . $request->ip();
+    }
+
+    protected function clearLoginAttempts(Request $request)
+    {
+        Cache::forget($this->throttleKey($request));
+        Cache::forget($this->throttleKey($request) . ':timer');
+        $request->session()->forget('lockout_time');
     }
 
     public function passwordCreate()
@@ -79,10 +123,10 @@ class AuthController extends Controller
             if(!$user){
                 return redirect()->back()->with('message', 'This email was wrong');
             }
-            
+
             if($user){
                 $otpObj = new OtpService;
-                
+
                 $code = $otpObj->sendOtpCode();
                 $this->sendOtp($email,$code);
                 if($code != null){
@@ -140,7 +184,7 @@ class AuthController extends Controller
                 'password'         => ['required', 'min:6'],
                 'confirm-password' => ['required', 'min:6', 'same:password'],
             ]);
-    
+
             if ($validator->fails()) {
                 return redirect()->back()
                             ->withErrors($validator)
@@ -164,7 +208,7 @@ class AuthController extends Controller
             $userObj = User::find($id);
 
             $res = $userObj->update($updateData);
-            
+
             if($res){
                 DB::commit();
                 Session::flash('success', 'Password changed successfully!');
@@ -178,7 +222,7 @@ class AuthController extends Controller
     }
 
     public function sendOtp($email, $code)
-    {   
+    {
         $this->sendOtpMail($email, $code);
     }
 

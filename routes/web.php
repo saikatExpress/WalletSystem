@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoleController;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
@@ -87,5 +88,3 @@ Route::middleware(['auth', 'user.status'])->group(function(){
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
-
-
