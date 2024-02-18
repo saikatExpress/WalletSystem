@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StorePackageRequest;
 use App\Http\Requests\UpdatePackageRequest;
 
@@ -29,7 +30,31 @@ class PackageController extends Controller
      */
     public function store(StorePackageRequest $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $packageObj = new Package();
+            if($request->hasFile('image')){
+                $imagePath = $request->file('image')->store('packageImage', 'public');
+            }
+
+
+
+            $packageObj->image   = $imagePath;
+            $packageObj->name    = $request->input('name');
+            $packageObj->price   = $request->input('price');
+            $packageObj->type    = $request->input('type');
+            $packageObj->message = $request->input('message');
+
+            $res = $packageObj->save();
+
+            DB::commit();
+            if($res){
+                return redirect()->back()->with('message', 'Package created successfully');
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            info($e);
+        }
     }
 
     /**

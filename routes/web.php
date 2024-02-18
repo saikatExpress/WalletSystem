@@ -72,6 +72,7 @@ Route::middleware(['auth', 'user.status'])->group(function(){
 
     Route::controller(PackageController::class)->group(function(){
         Route::get('/package/create', 'create')->name('package.create');
+        Route::post('/package/store', 'store')->name('package.store');
     });
 
     Route::controller(RoleController::class)->group(function(){
