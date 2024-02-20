@@ -249,7 +249,8 @@
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link"
                                         href="{{ route('user.create') }}">{{ __('messages.createuser') }}</a></li>
-                                <li><a class="nav-link" href="widget-data.html">{{ __('messages.userlist') }}</a>
+                                <li><a class="nav-link"
+                                        href="{{ route('user.list') }}">{{ __('messages.userlist') }}</a>
                                 </li>
                                 <li><a class="nav-link"
                                         href="{{ route('role.create') }}">{{ __('messages.role') }}</a></li>
@@ -266,7 +267,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="{{ route('package.create') }}">Add Package</a></li>
-                                <li><a class="nav-link" href="portfolio.html">Portfolio</a></li>
+                                <li><a class="nav-link" href="{{ route('package.list') }}">Package List</a></li>
                                 <li><a class="nav-link" href="blog.html">Blog</a></li>
                                 <li><a class="nav-link" href="calendar.html">Calendar</a></li>
                             </ul>

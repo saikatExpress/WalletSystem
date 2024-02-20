@@ -18,8 +18,8 @@
                     @endif
 
                     <div class="card">
-                        <form action="{{ route('package.store') }}" method="post" enctype="multipart/form-data"
-                            class="needs-validation" novalidate="">
+                        <form action="" method="post" enctype="multipart/form-data" class="needs-validation"
+                            novalidate="">
                             <div class="card-header">
                                 <h4>Package Info</h4>
                             </div>

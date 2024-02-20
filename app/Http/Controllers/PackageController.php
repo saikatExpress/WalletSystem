@@ -14,7 +14,9 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
+        $data['packages'] = Package::where('status', '1')->get();
+
+        return view('admin.package.index')->with($data);
     }
 
     /**
@@ -33,11 +35,10 @@ class PackageController extends Controller
         try {
             DB::beginTransaction();
             $packageObj = new Package();
+
             if($request->hasFile('image')){
                 $imagePath = $request->file('image')->store('packageImage', 'public');
             }
-
-
 
             $packageObj->image   = $imagePath;
             $packageObj->name    = $request->input('name');

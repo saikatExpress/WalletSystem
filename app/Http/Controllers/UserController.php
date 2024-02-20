@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        $data['users'] = User::all();
+
+        return view('admin.user.index')->with($data);
+    }
+
+
     public function create()
     {
         $users = User::where('status', '1')->latest()->get();

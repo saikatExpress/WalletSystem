@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Mail\TestEmail;
 use App\Models\Subscription;
 use App\Services\OtpService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -44,8 +45,19 @@ class AuthController extends Controller
         try {
             DB::beginTransaction();
 
+            $userServiceObj = new UserService();
+
+            $email    = $request->input('email');
+            $password = $request->input('password');
+
+            $user = User::where('email', $email)->where('status', '1')->first();
+
+            if($user->role == 'user'){
+                $userServiceObj->userDashboard();
+            }
+
             $credentials = $request->validate([
-                'email' => ['required', 'email'],
+                'email'    => ['required', 'email'],
                 'password' => ['required'],
             ]);
 
@@ -68,6 +80,44 @@ class AuthController extends Controller
                 'email' => 'The provided credentials do not match our records.',
             ])->onlyInput('email');
 
+        } catch (\Exception $e) {
+            DB::rollback();
+            info($e);
+        }
+    }
+
+    public function registerStore(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $userObj = new User();
+
+            $validator = Validator::make($request->all(), [
+                'name'         => ['required'],
+                'email'        => ['required'],
+                'phone_number' => ['required'],
+                'password'     => ['required', 'min:5'],
+                'agree'        => ['required'],
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                            ->withErrors($validator)
+                            ->withInput();
+            }
+
+            $userObj->name         = $request->input('name');
+            $userObj->email        = $request->input('email');
+            $userObj->phone_number = $request->input('phone_number');
+            $userObj->password     = Hash::make($request->input('password'));
+
+            $res = $userObj->save();
+
+            DB::commit();
+            if($res){
+                return redirect()->route('login')->with('message', 'Registration Complete..! Please login');
+            }
         } catch (\Exception $e) {
             DB::rollback();
             info($e);

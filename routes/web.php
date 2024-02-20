@@ -52,6 +52,7 @@ Route::controller(TestController::class)->group(function() {
 Route::controller(AuthController::class)->group(function(){
     Route::get('/register', 'register')->name('register');
     Route::post('/store', 'store')->name('store');
+    Route::post('/register/store', 'registerStore')->name('register.store');
     Route::get('/password', 'passwordCreate')->name('forgot.password');
     Route::get('/send/mail', 'sendOtpMail')->name('send.mail');
     Route::get('/otp/{email}/{code}', 'otpForm')->name('otp');
@@ -63,14 +64,17 @@ Route::controller(AuthController::class)->group(function(){
 
 Route::middleware(['auth', 'user.status'])->group(function(){
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/user/dashboard', [AdminController::class, 'userDashboard'])->name('user.dashboard');
 
     Route::controller(UserController::class)->group(function(){
+        Route::get('user/list', 'index')->name('user.list');
         Route::get('/user/create', 'create')->name('user.create');
         Route::post('/user/store', 'store')->name('user.store');
         Route::get('/user/detail/{id}', 'userDetails')->name('user.detail');
     });
 
     Route::controller(PackageController::class)->group(function(){
+        Route::get('/package/list', 'index')->name('package.list');
         Route::get('/package/create', 'create')->name('package.create');
         Route::post('/package/store', 'store')->name('package.store');
     });
